@@ -1,0 +1,88 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "./client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model users {
+  id       Int    @id @default(autoincrement())
+  username String
+  password String
+
+  boards        boards[]
+  invites       invites[]
+  tasks         tasks[]
+  messages      messages[]
+  task_priviles task_previles[]
+}
+
+model task_previles {
+  id       Int      @id @default(autoincrement())
+  task_id  Int
+  user_id  Int
+  add_time DateTime @db.Date
+
+  tasks tasks @relation(fields: [task_id], references: [id])
+  users users @relation(fields: [user_id], references: [id])
+}
+
+model boards {
+  id          Int      @id @default(autoincrement())
+  user_id     Int
+  title       String
+  description String?
+  create_at   DateTime @db.Date
+
+  stages  stages[]
+  tasks   tasks[]
+  invites invites[]
+  users   users     @relation(fields: [user_id], references: [id])
+}
+
+model stages {
+  id       Int    @id @default(autoincrement())
+  board_id Int
+  name     String
+
+  tasks  tasks[]
+  boards boards  @relation(fields: [board_id], references: [id])
+}
+
+model invites {
+  id        Int      @id @default(autoincrement())
+  user_id   Int
+  board_id  Int
+  message   String   @default("Invite you to join board.")
+  create_at DateTime @db.Date
+  users     users    @relation(fields: [user_id], references: [id])
+  boards    boards   @relation(fields: [board_id], references: [id])
+}
+
+model tasks {
+  id            Int             @id @default(autoincrement())
+  user_id       Int
+  board_id      Int
+  stage_id      Int
+  title         String
+  description   String?
+  due_date      DateTime        @db.Date
+  messages      messages[]
+  task_priviles task_previles[]
+  users         users           @relation(fields: [user_id], references: [id])
+  boards        boards          @relation(fields: [board_id], references: [id])
+  stages        stages          @relation(fields: [stage_id], references: [id])
+}
+
+model messages {
+  id         Int    @id @default(autoincrement())
+  user_id    Int
+  task_id    Int
+  message    String
+  like_count Int    @default(0)
+  users      users  @relation(fields: [user_id], references: [id])
+  tasks      tasks  @relation(fields: [task_id], references: [id])
+}
