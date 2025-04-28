@@ -1,17 +1,17 @@
 import { createWebHistory, createRouter } from "vue-router";
 
-import ex from "@/views/Index.vue";
-import login from "@/views/login.vue";
-import register from "@/views/register.vue";
 import submiss from "@/views/sub.vue";
 import info from "@/views/duedate.vue";
+import Login from "@/views/Login.vue";
+import HomeView from "@/views/HomeView.vue";
+import Register from "@/views/Register.vue";
 
 const routes = [
-  { path: "/ex", name: "ex", component: ex },
-  { path: "/login", name: "login", component: login },
-  { path: "/register", name: "register", component: register },
+  { path: "/", name: "home", component: HomeView },
+  { path: "/login", name: "login", component: Login },
+  { path: "/register", name: "register", component: Register },
   { path: "/submiss", name: "submission", component: submiss },
-  {path: "/info", name: "info", component: info},
+  { path: "/info", name: "info", component: info },
 ];
 
 const router = createRouter({
