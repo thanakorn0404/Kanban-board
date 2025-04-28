@@ -8,6 +8,8 @@ import usersRoute from "./routes/users";
 import boardsRoute from "./routes/boards";
 import invitesRoute from "./routes/invites";
 import loginRoute from "./routes/login";
+import registerRoute from "./routes/register";
+import forgotPasswordRoute from "./routes/forgot-password";
 
 // middleware and cors
 const app = express();
@@ -19,6 +21,8 @@ app.use("/api/v1/users", auth, usersRoute);
 app.use("/api/v1/boards", auth, boardsRoute);
 app.use("/api/v1/invites", auth, invitesRoute);
 app.use("/login", loginRoute);
+app.use("/register", registerRoute);
+app.use("/fogot-password", forgotPasswordRoute);
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Server is running on port: ${port}`));

@@ -20,13 +20,14 @@ router.post("/", async (req: Request, res: Response) => {
   users.password = user_data?.password!;
 
   if (!users.username) {
-    res.status(200).json({ message: "username not found." });
+    res.status(400).json({ message: "The username you entered doesn’t exist" });
   }
 
   const is_password_valid: boolean = await bcrypt.compare(password, users.password);
-  if (!is_password_valid) res.status(200).json({ message: "password is wrong." });
+  if (!is_password_valid)
+    res.status(400).json({ message: "Incorrect password. Please try again" });
 
-  res.status(200).json({ username: user_data?.username, api_key });
+  res.status(200).json({ id: user_data?.id, username: users.username, api_key });
 });
 
 export default router;
